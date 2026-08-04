@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AuthProvider } from "@/components/AuthProvider";
 import GlobalWhatsAppButton from "@/components/GlobalWhatsAppButton";
 import SocialSidebar from "@/components/SocialSidebar";
@@ -84,6 +85,7 @@ export default async function RootLayout({
         {settings?.footer_scripts && (
           <div dangerouslySetInnerHTML={{ __html: settings.footer_scripts }} suppressHydrationWarning />
         )}
+        <SpeedInsights />
       </body>
     </html>
   );
