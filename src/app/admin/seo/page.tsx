@@ -138,7 +138,7 @@ export default function AdminSeoPage() {
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Meta Description</label>
                 <textarea
                   rows={2}
-                  maxLength={160}
+                  maxLength={250}
                   value={values.meta_description}
                   onChange={(e) => updateField(r.route, "meta_description", e.target.value)}
                   className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 outline-none resize-none"
