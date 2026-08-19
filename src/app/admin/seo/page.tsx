@@ -255,7 +255,7 @@ export default function AdminSeoPage() {
                 </p>
                 <p className="text-green-800 text-xs mt-0.5">vyomregency.com{r.path}</p>
                 <p className="text-gray-600 text-sm mt-1 line-clamp-2">
-                  {(values.meta_description || "No description set").slice(0, 160)}
+                  {(values.meta_description || "No description set").slice(0, 250)}
                 </p>
               </div>
 
