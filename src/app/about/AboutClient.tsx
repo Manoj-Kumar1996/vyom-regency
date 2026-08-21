@@ -88,7 +88,7 @@ export default function AboutClient() {
           </div>
           <div className="container mx-auto px-4 text-center relative z-10">
             <div className="inline-block bg-amber-500 text-green-900 px-4 py-1 rounded-full text-sm font-bold mb-4 animate-pulse">
-              Established 2017
+              Established 2018
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
               About <span className="text-amber-400">Vyom Regency</span>
