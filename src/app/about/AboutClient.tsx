@@ -8,12 +8,42 @@ import Founder from "@/components/Founder";
 import Stats from "@/components/Stats";
 import VisionMission from "@/components/VisionMission";
 
+// ⚠️ IMPORTANT: Adjust this import path to match your project's Supabase client file
+import { supabase } from "@/lib/supabase"; 
+
 export default function AboutClient() {
   const [isMounted, setIsMounted] = useState(false);
+  const [openIndex, setOpenIndex] = useState(null);
+  const [faqs, setFaqs] = useState([]);
+  const [loadingFaqs, setLoadingFaqs] = useState(true);
 
   useEffect(() => {
     setIsMounted(true);
+    fetchAboutFaqs();
   }, []);
+
+  const fetchAboutFaqs = async () => {
+    try {
+      setLoadingFaqs(true);
+      const { data, error } = await supabase
+        .from('faqs')
+        .select('id, question, answer')
+        .eq('is_active', true)          // Only get active FAQs
+        .eq('page_route', 'about')      // Only get FAQs assigned to the about page
+        .order('sort_order', { ascending: true }); // Keep them in the order you set
+
+      if (error) throw error;
+      if (data) setFaqs(data);
+    } catch (error) {
+      console.error("Error fetching FAQs:", error);
+    } finally {
+      setLoadingFaqs(false);
+    }
+  };
+
+  const toggleFAQ = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
   if (!isMounted) {
     return (
@@ -125,6 +155,68 @@ export default function AboutClient() {
         <Founder />
         <Stats />
         <VisionMission />
+
+        {/* Database-Driven FAQ Section */}
+        {(faqs.length > 0 || loadingFaqs) && (
+          <section className="py-20 bg-gray-50">
+            <div className="container mx-auto px-4 max-w-4xl">
+              <div className="text-center mb-12">
+                <span className="text-green-600 font-semibold text-sm uppercase tracking-wider">FAQ</span>
+                <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-800 mt-2 mb-4">
+                  Frequently Asked <span className="text-green-700">Questions</span>
+                </h2>
+                <div className="w-20 h-1 bg-green-700 mx-auto mt-4 rounded-full"></div>
+              </div>
+
+              {loadingFaqs ? (
+                <div className="space-y-4 animate-pulse">
+                  {[1, 2, 3].map((skeleton) => (
+                    <div key={skeleton} className="bg-white h-16 rounded-xl shadow-sm border border-gray-100"></div>
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {faqs.map((faq, index) => {
+                    const isOpen = openIndex === index;
+                    return (
+                      <div
+                        key={faq.id || index}
+                        className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300"
+                      >
+                        <button
+                          onClick={() => toggleFAQ(index)}
+                          className="w-full flex items-center justify-between p-5 text-left font-semibold text-gray-800 hover:text-green-700 transition-colors focus:outline-none"
+                        >
+                          <span className="text-base md:text-lg pr-4">{faq.question}</span>
+                          <svg
+                            className={`w-5 h-5 text-green-700 transform transition-transform duration-300 flex-shrink-0 ${
+                              isOpen ? "rotate-180" : "rotate-0"
+                            }`}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                        <div
+                          className={`transition-all duration-300 ease-in-out ${
+                            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                          } overflow-hidden`}
+                        >
+                          <div className="p-5 pt-0 text-gray-600 leading-relaxed border-t border-gray-50 text-sm md:text-base whitespace-pre-line">
+                            {faq.answer}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* CTA Section */}
         <section className="py-16 bg-gradient-to-r from-green-900 to-green-800 text-white text-center">
