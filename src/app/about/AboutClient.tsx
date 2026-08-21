@@ -34,6 +34,7 @@ export default function AboutClient() {
 
       if (error) throw error;
       if (data) setFaqs(data);
+      console.log(data);
     } catch (error) {
       console.error("Error fetching FAQs:", error);
     } finally {
