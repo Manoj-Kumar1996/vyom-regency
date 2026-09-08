@@ -20,6 +20,11 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Vyom Regency Pvt Ltd - Premium Farmhouse Plots in Rajasthan",
     description: "Vyom Regency offers premium agriculture land and farmhouse plots in Kishangarh Bas, Alwar, Rajasthan. Clear titles, transparent deals since 2017.",
     verification: settings?.gsc_verification_code ? { google: settings.gsc_verification_code } : undefined,
+    icons: {
+      icon: 'https://vyomregency.in/favicon-32x32.png',
+      shortcut: 'https://vyomregency.in/favicon-16x16.png',
+      apple: 'https://vyomregency.in/apple-touch-icon.png',
+    },
   };
 }
 
