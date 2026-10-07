@@ -8,6 +8,10 @@ import Link from "@tiptap/extension-link";
 import ImageExtension from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
+import { Table } from "@tiptap/extension-table";
+import { TableRow } from "@tiptap/extension-table-row";
+import { TableCell } from "@tiptap/extension-table-cell";
+import { TableHeader } from "@tiptap/extension-table-header";
 import {
   Bold,
   Italic,
@@ -26,6 +30,7 @@ import {
   Redo,
   Code2,
   Eye,
+  Table as TableIcon,
 } from "lucide-react";
 
 interface WysiwygEditorProps {
@@ -164,6 +169,16 @@ function Toolbar({ editor }: { editor: Editor | null }) {
 
       <span className="w-px h-5 bg-gray-300 mx-1" />
 
+      <ToolbarButton
+        title="Insert Table"
+        active={editor.isActive("table")}
+        onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
+      >
+        <TableIcon size={15} />
+      </ToolbarButton>
+
+      <span className="w-px h-5 bg-gray-300 mx-1" />
+
       <ToolbarButton title="Undo" disabled={!editor.can().undo()} onClick={() => editor.chain().focus().undo().run()}>
         <Undo size={15} />
       </ToolbarButton>
@@ -188,6 +203,10 @@ export default function WysiwygEditor({ value, onChange, placeholder }: WysiwygE
       ImageExtension,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Placeholder.configure({ placeholder: placeholder || "Start writing…" }),
+      Table.configure({ resizable: true }),
+      TableRow,
+      TableCell,
+      TableHeader,
     ],
     content: value || "",
     onUpdate: ({ editor }) => {
