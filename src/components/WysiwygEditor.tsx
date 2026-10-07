@@ -177,6 +177,7 @@ function Toolbar({ editor }: { editor: Editor | null }) {
 export default function WysiwygEditor({ value, onChange, placeholder }: WysiwygEditorProps) {
   const [mode, setMode] = useState<"visual" | "code">("visual");
   const [codeValue, setCodeValue] = useState(value || "");
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -192,7 +193,7 @@ export default function WysiwygEditor({ value, onChange, placeholder }: WysiwygE
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       onChange(html);
-      setCodeValue(html);
+      if (mode === "code") setCodeValue(html);
     },
     editorProps: {
       attributes: {
@@ -201,14 +202,22 @@ export default function WysiwygEditor({ value, onChange, placeholder }: WysiwygE
     },
   });
 
+  // Initialize editor content once on mount
+  useEffect(() => {
+    if (editor && !isInitialized) {
+      editor.commands.setContent(value || "", { emitUpdate: false });
+      setCodeValue(value || "");
+      setIsInitialized(true);
+    }
+  }, [editor, isInitialized]);
+
   // Keep the editor in sync if `value` changes externally (e.g. loading a different record)
   useEffect(() => {
-    if (editor && value !== editor.getHTML()) {
+    if (editor && isInitialized && value !== editor.getHTML()) {
       editor.commands.setContent(value || "", { emitUpdate: false });
+      setCodeValue(value || "");
     }
-    setCodeValue(value || "");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  }, [value, editor, isInitialized]);
 
   const switchToCode = () => {
     if (editor) setCodeValue(editor.getHTML());
@@ -252,10 +261,8 @@ export default function WysiwygEditor({ value, onChange, placeholder }: WysiwygE
       ) : (
         <textarea
           value={codeValue}
-          onChange={(e) => {
-            setCodeValue(e.target.value);
-            onChange(e.target.value);
-          }}
+          onChange={(e) => setCodeValue(e.target.value)}
+          onBlur={() => onChange(codeValue)}
           spellCheck={false}
           className="w-full min-h-[180px] p-4 text-sm font-mono leading-6 text-gray-700 focus:outline-none resize-y"
         />

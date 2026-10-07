@@ -191,7 +191,32 @@ export default function AdminBlogPage() {
         toast.error("Save failed");
       } else {
         toast.success(isNew ? "Post created" : "Post updated");
-        router.push("/admin/blog");
+        setEditing(null);
+        setSlugManuallyEdited(false);
+        setFormData({
+          title: "",
+          slug: "",
+          excerpt: "",
+          content: "",
+          category: "",
+          categorySlug: "",
+          author: "",
+          date: "",
+          readTime: "",
+          image: "",
+          tags: [],
+          featured: false,
+          meta_title: "",
+          meta_description: "",
+          focus_keyword: "",
+          canonical_url: "",
+          robots_index: true,
+          robots_follow: true,
+          og_title: "",
+          og_description: "",
+          og_image: "",
+          custom_json_ld: "",
+        });
         fetchPosts();
       }
     } finally {
