@@ -18,8 +18,8 @@ export default function TrustSignals() {
             <div className="h-12 flex items-center justify-center mb-3">
               <span className="text-5xl leading-none">🏆</span>
             </div>
-            <h3 className="font-bold text-xl mb-2">50+ Families Served</h3>
-            <p className="text-gray-600 text-sm">Successfully delivered land parcels</p>
+            <h3 className="font-bold text-xl mb-2">100+ Families Served</h3>
+            <p className="text-gray-600 text-sm">Successfully delivered farm land parcels</p>
           </div>
           {/* Badge 2 */}
           <div className="text-center p-6 bg-green-50 rounded-xl">
@@ -44,7 +44,7 @@ export default function TrustSignals() {
               <Handshake className="h-12 w-12 text-green-600" strokeWidth={1.75} />
             </div>
             <h3 className="font-bold text-xl mb-2">Delivered</h3>
-            <p className="text-gray-600 text-sm">3 Projects & 50+ Land Pieces</p>
+            <p className="text-gray-600 text-sm">4 Projects & 100+ farm Land Pieces</p>
           </div>
         </div>
 
