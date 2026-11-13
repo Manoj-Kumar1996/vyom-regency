@@ -44,7 +44,7 @@ export default function TrustSignals() {
               <Handshake className="h-12 w-12 text-green-600" strokeWidth={1.75} />
             </div>
             <h3 className="font-bold text-xl mb-2">Delivered</h3>
-            <p className="text-gray-600 text-sm">4 Projects & 100+ farm Land Pieces</p>
+            <p className="text-gray-600 text-sm">4 Projects & 100+ farm Land Parcels</p>
           </div>
         </div>
 
